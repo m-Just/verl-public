@@ -628,7 +628,11 @@ def _update_subagent_iou_rewards(
 
         # Get root job's accuracy_reward
         root_idx = job_id_to_idx[extra_info["root_job_id"]]
-        root_accuracy_reward = scores[root_idx].accuracy_reward
+        root_score = scores[root_idx]
+        if root_score is None:
+            # Root job's score computation failed, skip this subagent
+            continue
+        root_accuracy_reward = root_score.accuracy_reward
 
         # Compute pseudo_iou_reward based on pseudo_iou_reward_type
         caller_feedback = extra_info["caller_feedback"]
