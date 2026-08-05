@@ -98,6 +98,19 @@ Important vLLM defaults are in `standalone_eval/model_configs/release_ray_vllm.y
 chunked prefill enabled, prefix caching enabled, and the same sampling settings
 used by RL validation.
 
+## Caveats and Future Work
+
+The standalone evaluator uses the extracted `insight_agent_core` runner by
+default. The RL reward/judge path is shared with standalone evaluation through
+`verl/utils/reward_score/vsearch_batch.py`, but the released RL launcher still
+uses the legacy VERL rollout agent loop (`insight_qwen_agent`) by default. A
+VERL wrapper for the extracted core agent (`insight_qwen_agent_core`) is included,
+but fully aligning RL rollout execution with standalone evaluation requires
+switching both `actor_rollout_ref.rollout.agent.default_agent_loop` and the RL
+parquet `agent_name` values to `insight_qwen_agent_core`. This migration is left
+as future work so the released training recipe preserves the checkpoint's
+original training path.
+
 ## Useful Utilities
 
 - `scripts/export_conversation_image_source_bundle.py`: packs exported
