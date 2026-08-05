@@ -347,8 +347,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--resume", action="store_true")
     parser.add_argument(
         "--insight-qwen-judge-mode",
-        choices=["legacy", "raw_final_answer_fallback_v2", "single_call_v1", "single_call_v2"],
-        default="legacy",
+        choices=["legacy_prompt_v2"],
+        default="legacy_prompt_v2",
     )
     return parser.parse_args()
 

@@ -26,9 +26,8 @@ from verl.utils.reward_score.vsearch_batch import compute_score_batch
 
 POLL_INTERVAL_SECONDS = float(os.environ.get("JUDGE_POLL_INTERVAL_SECONDS", "30"))
 DEFAULT_JUDGE_MODEL = "gpt-5-nano"
-DEFAULT_FALLBACK_JUDGE_MODEL = "gemini-3.1-flash-lite"
+DEFAULT_FALLBACK_JUDGE_MODEL = ""
 DEFAULT_JUDGE_TASK_TIMEOUT_SECONDS = 60
-DEFAULT_SINGLE_CALL_JUDGE_TASK_TIMEOUT_SECONDS = 600
 JUDGE_MIN_SUCCESS_RATE = float(os.environ.get("JUDGE_MIN_SUCCESS_RATE", "0.99"))
 JUDGE_MAX_RETRIES = int(os.environ.get("JUDGE_MAX_RETRIES", "10"))
 JUDGE_RETRY_INTERVAL_SECONDS = int(os.environ.get("JUDGE_RETRY_INTERVAL_SECONDS", "30"))
@@ -61,8 +60,6 @@ DEFAULT_REWARD_KWARGS = {
 def resolve_judge_task_timeout_seconds(args: argparse.Namespace) -> int:
     if "JUDGE_TASK_TIMEOUT_SECONDS" in os.environ:
         return int(os.environ["JUDGE_TASK_TIMEOUT_SECONDS"])
-    if args.insight_qwen_judge_mode in {"single_call_v1", "single_call_v2"}:
-        return DEFAULT_SINGLE_CALL_JUDGE_TASK_TIMEOUT_SECONDS
     return DEFAULT_JUDGE_TASK_TIMEOUT_SECONDS
 
 
@@ -573,9 +570,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--judge-workers", type=int, default=32)
     parser.add_argument(
         "--insight-qwen-judge-mode",
-        choices=["legacy", "legacy_prompt_v2", "raw_final_answer_fallback_v2", "single_call_v1", "single_call_v2"],
-        default="legacy",
-        help="Opt-in judge behavior for insight_qwen_agent; legacy preserves the existing path.",
+        choices=["legacy_prompt_v2"],
+        default="legacy_prompt_v2",
+        help="Release judge mode for insight_qwen_agent.",
     )
     return parser.parse_args()
 
