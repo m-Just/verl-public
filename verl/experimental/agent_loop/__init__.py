@@ -13,15 +13,40 @@
 # limitations under the License.
 
 from .agent_loop import AgentLoopBase, AgentLoopManager, AgentLoopWorker, AsyncLLMServerManager
-from .insight_o3_agent_loop import VReasonerLoop, VReasonerLoopV2, VSearcherLoop, VSearcherLoopQwen3VL
 from .single_turn_agent_loop import SingleTurnAgentLoop
 from .tool_agent_loop import ToolAgentLoop
-from .qwen_agent_loop import QwenAgentLoop, InSightQwenAgentLoop
-from .core_agent_loop import CoreInSightQwenAgentLoop, CoreVReasonerLoopV2
+
+try:
+    from .qwen_agent_loop import QwenAgentLoop, InSightQwenAgentLoop
+except ModuleNotFoundError as exc:
+    if exc.name != "qwen_agent":
+        raise
+    QwenAgentLoop = None
+    InSightQwenAgentLoop = None
+
+try:
+    from .insight_o3_agent_loop import VReasonerLoop, VReasonerLoopV2, VSearcherLoop, VSearcherLoopQwen3VL
+except ModuleNotFoundError as exc:
+    if exc.name not in {"insight_o3", "qwen_agent"}:
+        raise
+    VReasonerLoop = None
+    VReasonerLoopV2 = None
+    VSearcherLoop = None
+    VSearcherLoopQwen3VL = None
+
+try:
+    from .core_agent_loop import CoreInSightQwenAgentLoop, CoreVReasonerLoopV2
+except ModuleNotFoundError as exc:
+    if exc.name not in {"insight_agent_core", "qwen_agent", "insight_o3"}:
+        raise
+    CoreInSightQwenAgentLoop = None
+    CoreVReasonerLoopV2 = None
 
 _ = [
     SingleTurnAgentLoop,
     ToolAgentLoop,
+]
+for _optional_loop in (
     VReasonerLoop,
     VReasonerLoopV2,
     VSearcherLoop,
@@ -30,6 +55,8 @@ _ = [
     InSightQwenAgentLoop,
     CoreInSightQwenAgentLoop,
     CoreVReasonerLoopV2,
-]
+):
+    if _optional_loop is not None:
+        _.append(_optional_loop)
 
 __all__ = ["AgentLoopBase", "AgentLoopManager", "AsyncLLMServerManager", "AgentLoopWorker"]

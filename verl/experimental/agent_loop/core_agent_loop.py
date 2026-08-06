@@ -19,7 +19,12 @@ from verl.experimental.agent_loop.agent_loop import (
     DictConfigWrap,
     register,
 )
-from verl.experimental.agent_loop.insight_o3_agent_loop import VReasonerLoopV2
+try:
+    from verl.experimental.agent_loop.insight_o3_agent_loop import VReasonerLoopV2
+except ModuleNotFoundError as exc:
+    if exc.name != "insight_o3":
+        raise
+    VReasonerLoopV2 = None
 from verl.experimental.agent_loop.qwen_agent_loop import QwenAgentLoop
 from verl.utils.vreasoner_v2_conversation_export import (
     build_export_record,
@@ -327,13 +332,17 @@ class CoreInSightQwenAgentLoop(QwenAgentLoop):
             return None
 
 
-@register("vreasoner_v2_core")
-class CoreVReasonerLoopV2(VReasonerLoopV2):
-    """Compatibility registration for the next vreasoner_v2 core migration step.
+if VReasonerLoopV2 is not None:
 
-    This preserves the old implementation behind a new agent name while
-    ``insight_qwen_agent_core`` is validated. The VReasoner orchestration can
-    then be moved to the same core/runtime pattern without disrupting old runs.
-    """
+    @register("vreasoner_v2_core")
+    class CoreVReasonerLoopV2(VReasonerLoopV2):
+        """Compatibility registration for the next vreasoner_v2 core migration step.
 
-    pass
+        This preserves the old implementation behind a new agent name while
+        ``insight_qwen_agent_core`` is validated. The VReasoner orchestration can
+        then be moved to the same core/runtime pattern without disrupting old runs.
+        """
+
+        pass
+else:
+    CoreVReasonerLoopV2 = None
