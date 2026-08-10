@@ -9,7 +9,7 @@ from typing import Literal, Optional
 from openai.types.chat import ChatCompletionMessage
 from PIL import Image
 
-from insight_o3.utils.api import create_async_openai_client, query_api  # pyright: ignore[reportMissingImports]
+from insight_agent_core.openai_api import create_async_openai_client, query_api
 
 import verl.utils.vreasoner_v2_prompt as prompts
 

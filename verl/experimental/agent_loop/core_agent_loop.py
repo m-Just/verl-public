@@ -22,7 +22,7 @@ from verl.experimental.agent_loop.agent_loop import (
 try:
     from verl.experimental.agent_loop.insight_o3_agent_loop import VReasonerLoopV2
 except ModuleNotFoundError as exc:
-    if exc.name != "insight_o3":
+    if exc.name != "qwen_agent":
         raise
     VReasonerLoopV2 = None
 from verl.experimental.agent_loop.qwen_agent_loop import QwenAgentLoop

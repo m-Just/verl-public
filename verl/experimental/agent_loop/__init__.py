@@ -27,7 +27,7 @@ except ModuleNotFoundError as exc:
 try:
     from .insight_o3_agent_loop import VReasonerLoop, VReasonerLoopV2, VSearcherLoop, VSearcherLoopQwen3VL
 except ModuleNotFoundError as exc:
-    if exc.name not in {"insight_o3", "qwen_agent"}:
+    if exc.name != "qwen_agent":
         raise
     VReasonerLoop = None
     VReasonerLoopV2 = None
@@ -37,7 +37,7 @@ except ModuleNotFoundError as exc:
 try:
     from .core_agent_loop import CoreInSightQwenAgentLoop, CoreVReasonerLoopV2
 except ModuleNotFoundError as exc:
-    if exc.name not in {"insight_agent_core", "qwen_agent", "insight_o3"}:
+    if exc.name not in {"insight_agent_core", "qwen_agent"}:
         raise
     CoreInSightQwenAgentLoop = None
     CoreVReasonerLoopV2 = None

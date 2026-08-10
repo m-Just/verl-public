@@ -23,7 +23,7 @@ from verl.utils.vsearch_role_play_prompt import qa_verify as verify_prompt
 from verl.utils.vreasoner_v2_conversation_export import append_reward_info
 from verl.utils.vsearch_profile import summarize_numbers, write_profile_event
 
-from insight_o3.utils.api import create_async_openai_client, query_api  # pyright: ignore[reportMissingImports]
+from insight_agent_core.openai_api import create_async_openai_client, query_api
 
 
 logger = logging.getLogger(__file__)

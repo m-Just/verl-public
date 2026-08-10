@@ -15,7 +15,7 @@ import verl.utils.vsearch_role_play_prompt as prompts_no_tool_feedback
 import verl.utils.vsearch_role_play_prompt_with_tool_feedback as prompts_with_tool_feedback
 from verl.utils.vsearch import BBox
 
-from insight_o3.utils.api import create_async_openai_client, query_api  # pyright: ignore[reportMissingImports]
+from insight_agent_core.openai_api import create_async_openai_client, query_api
 
 
 logger = logging.getLogger(__file__)

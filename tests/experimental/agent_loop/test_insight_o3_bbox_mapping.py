@@ -1,6 +1,5 @@
 import importlib
 import sys
-import types
 from pathlib import Path
 
 import pytest
@@ -14,12 +13,6 @@ from verl.utils.vsearch import resize_bbox
 
 
 def _import_insight_o3_agent_loop():
-    api_module = types.ModuleType("insight_o3.utils.api")
-    api_module.create_async_openai_client = lambda *args, **kwargs: None
-    api_module.query_api = lambda *args, **kwargs: None
-    sys.modules.setdefault("insight_o3", types.ModuleType("insight_o3"))
-    sys.modules.setdefault("insight_o3.utils", types.ModuleType("insight_o3.utils"))
-    sys.modules["insight_o3.utils.api"] = api_module
     return importlib.import_module("verl.experimental.agent_loop.insight_o3_agent_loop")
 
 
